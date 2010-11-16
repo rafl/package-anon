@@ -15,7 +15,8 @@ XSLoader::load(__PACKAGE__);
 
 sub anon_object {
     my ($ref) = @_;
-    my $stash = _anon_bless($ref);
+    my $stash = Object::Anon::Stash->new;
+    $stash->bless($ref);
     return ($ref, $stash);
 }
 

@@ -4,23 +4,35 @@
 
 static HV *stash_stash;
 
-MODULE = Object::Anon  PACKAGE = Object::Anon
+static SV *
+new_anon_stash ()
+{
+    SV *obj;
+    HV *stash = newHV();
+    hv_name_set(stash, "__ANON__", 8, 0);
+    obj = newRV_noinc((SV *)stash);
+    sv_bless(obj, stash_stash);
+    return obj;
+}
+
+MODULE = Object::Anon  PACKAGE = Object::Anon::Stash
 
 PROTOTYPES: DISABLE
 
+SV *
+new (class)
+  CODE:
+    RETVAL = new_anon_stash();
+  OUTPUT:
+    RETVAL
+
 void
-_anon_bless (rv)
+bless (stash, rv)
+    SV *stash
     SV *rv
-  PREINIT:
-    HV *stash;
-    SV *stash_obj;
   PPCODE:
-    stash = newHV();
-    hv_name_set(stash, "__ANON__", 8, 0);
-    stash_obj = newRV_noinc((SV *)stash);
-    sv_bless(stash_obj, stash_stash);
-    sv_bless(rv, stash);
-    mPUSHs(stash_obj);
+    sv_bless(rv, (HV *)SvRV(stash));
+    PUSHs(rv);
 
 BOOT:
     stash_stash = gv_stashpvs("Object::Anon::Stash", 0);
