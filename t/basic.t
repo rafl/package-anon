@@ -24,4 +24,8 @@ is($obj->VERSION, 13);
 $stash->add_method(AUTOLOAD => sub { our $AUTOLOAD });
 is($obj->moo, '__ANON__::moo');
 
+my $other_stash = Package::Anon->new;
+my $other_obj = $other_stash->bless({});
+ok !$other_obj->can('foo');
+
 done_testing;
