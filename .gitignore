@@ -12,7 +12,7 @@ MANIFEST*
 !MANIFEST.SKIP
 Debian*
 README
-Object-Anon-*
+Package-Anon-*
 *.bs
 *.[co]
 *.xsc

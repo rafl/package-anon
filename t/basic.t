@@ -2,11 +2,12 @@ use strict;
 use warnings;
 use Test::More;
 
-use Object::Anon;
+use Package::Anon;
 
 sub __ANON__::foo { die 23 }
 
-my ($obj, $stash) = anon_object {};
+my $stash = Package::Anon->new;
+my $obj = $stash->bless({});
 isa_ok($obj, '__ANON__');
 
 ok(!$obj->can('foo'));

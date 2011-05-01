@@ -1,5 +1,5 @@
 use ExtUtils::MakeMaker;
 
 WriteMakefile(
-    NAME => 'Object::Anon',
+    NAME => 'Package::Anon',
 );

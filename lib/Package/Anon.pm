@@ -1,7 +1,11 @@
 use strict;
 use warnings;
 
-package Object::Anon::Stash;
+package Package::Anon;
+
+use XSLoader;
+
+XSLoader::load(__PACKAGE__);
 
 use Symbol ();
 

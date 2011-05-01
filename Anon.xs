@@ -15,7 +15,7 @@ new_anon_stash ()
     return obj;
 }
 
-MODULE = Object::Anon  PACKAGE = Object::Anon::Stash
+MODULE = Package::Anon  PACKAGE = Package::Anon
 
 PROTOTYPES: DISABLE
 
@@ -35,6 +35,4 @@ bless (stash, rv)
     PUSHs(rv);
 
 BOOT:
-    stash_stash = gv_stashpvs("Object::Anon::Stash", 0);
-    if (!stash_stash)
-        croak("Object::Anon::Stash isn't loaded");
+    stash_stash = gv_stashpvs("Package::Anon", 0);

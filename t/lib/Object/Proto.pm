@@ -3,7 +3,7 @@ use warnings;
 
 package Object::Proto;
 
-use Object::Anon;
+use Package::Anon;
 
 use Sub::Exporter -setup => {
     exports => ['new_instance', 'add_method'],
@@ -13,7 +13,8 @@ use Sub::Exporter -setup => {
 sub new_instance {
     my ($ref, $proto) = @_;
 
-    my ($o, $s) = anon_object $ref;
+    my $s = Package::Anon->new;
+    my $o = $s->bless($ref);
 
     if ($proto) {
         my $stash = $proto->{__prototype__};

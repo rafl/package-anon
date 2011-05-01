@@ -2,10 +2,11 @@ use strict;
 use warnings;
 use Test::More;
 
-use Object::Anon;
+use Package::Anon;
 use Scalar::Util qw(weaken);
 
-my ($obj, $stash) = anon_object {};
+my $stash = Package::Anon->new;
+my $obj = $stash->bless({});
 
 my $weak_stash = $stash;
 weaken $weak_stash;
