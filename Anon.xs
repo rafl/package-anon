@@ -2,13 +2,22 @@
 #include "perl.h"
 #include "XSUB.h"
 
-static SV *
-new_anon_stash (HV *klass, SV *name)
-{
+MODULE = Package::Anon  PACKAGE = Package::Anon
+
+PROTOTYPES: DISABLE
+
+SV *
+_new_anon_stash (klass, name=NULL)
+    SV *klass
+    SV *name
+  PREINIT:
     SV *obj;
-    HV *stash = newHV();
+    HV *stash, *ourstash;
     STRLEN len;
     char *namestr;
+  PPCODE:
+    stash = newHV();
+    ourstash = gv_stashsv(klass, 0);
 
     if (name && SvOK(name)) {
         namestr = SvPV(name, len);
@@ -20,22 +29,9 @@ new_anon_stash (HV *klass, SV *name)
 
     hv_name_set(stash, namestr, len, 0);
     obj = newRV_noinc((SV *)stash);
-    sv_bless(obj, klass);
-    return obj;
-}
+    sv_bless(obj, ourstash);
 
-MODULE = Package::Anon  PACKAGE = Package::Anon
-
-PROTOTYPES: DISABLE
-
-SV *
-new (klass, name=NULL)
-    SV *klass
-    SV *name
-  CODE:
-    RETVAL = new_anon_stash(gv_stashsv(klass, 0), name);
-  OUTPUT:
-    RETVAL
+    mPUSHs(obj);
 
 void
 bless (stash, rv)
