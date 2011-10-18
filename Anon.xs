@@ -3,11 +3,22 @@
 #include "XSUB.h"
 
 static SV *
-new_anon_stash (HV *klass)
+new_anon_stash (HV *klass, SV *name)
 {
     SV *obj;
     HV *stash = newHV();
-    hv_name_set(stash, "__ANON__", 8, 0);
+    STRLEN len;
+    char *namestr;
+
+    if (name && SvOK(name)) {
+        namestr = SvPV(name, len);
+    }
+    else {
+        namestr = "__ANON__";
+        len = 8;
+    }
+
+    hv_name_set(stash, namestr, len, 0);
     obj = newRV_noinc((SV *)stash);
     sv_bless(obj, klass);
     return obj;
@@ -18,10 +29,11 @@ MODULE = Package::Anon  PACKAGE = Package::Anon
 PROTOTYPES: DISABLE
 
 SV *
-new (klass)
+new (klass, name=NULL)
     SV *klass
+    SV *name
   CODE:
-    RETVAL = new_anon_stash(gv_stashsv(klass, 0));
+    RETVAL = new_anon_stash(gv_stashsv(klass, 0), name);
   OUTPUT:
     RETVAL
 
