@@ -18,10 +18,18 @@ MODULE = Package::Anon  PACKAGE = Package::Anon
 PROTOTYPES: DISABLE
 
 SV *
-new (klass)
-    SV *klass
+new (sv)
+    SV *sv
   CODE:
-    RETVAL = new_anon_stash(gv_stashsv(klass, 0));
+    RETVAL = new_anon_stash(gv_stashsv(sv, 0));
+  OUTPUT:
+    RETVAL
+
+SV *
+create (classname)
+    char *classname
+  CODE:
+    RETVAL = new_anon_stash(gv_stashpvn(classname, strlen(classname), GV_ADD));
   OUTPUT:
     RETVAL
 
