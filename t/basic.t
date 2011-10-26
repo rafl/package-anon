@@ -28,4 +28,8 @@ my $other_stash = Package::Anon->new;
 my $other_obj = $other_stash->bless({});
 ok !$other_obj->can('foo');
 
+my $named_stash = Package::Anon::create('Object');
+my $obj2 = bless {}, ref $named_stash;
+ok !$obj2->can('foo');
+
 done_testing;
