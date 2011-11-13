@@ -8,12 +8,24 @@ use XSLoader;
 XSLoader::load(__PACKAGE__);
 
 use Symbol ();
+use Scalar::Util ();
 
 sub new {
     my $class = shift;
 
     my $stash = $class->_new_anon_stash(@_);
-    $stash->add_method(isa => sub { '' });
+
+    my $weak_stash = $stash;
+    Scalar::Util::weaken($weak_stash);
+
+    $stash->add_method(isa => sub {
+        my ($obj, $class) = @_;
+
+        return $class == $weak_stash
+            if ref $class;
+
+        return '';
+    });
 
     return $stash;
 }
