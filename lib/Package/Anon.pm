@@ -11,7 +11,11 @@ use Symbol ();
 
 sub new {
     my $class = shift;
-    return $class->_new_anon_stash(@_);
+
+    my $stash = $class->_new_anon_stash(@_);
+    $stash->add_method(isa => sub { '' });
+
+    return $stash;
 }
 
 sub add_method {
