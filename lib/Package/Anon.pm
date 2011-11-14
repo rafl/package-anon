@@ -5,7 +5,10 @@ package Package::Anon;
 
 use XSLoader;
 
-XSLoader::load(__PACKAGE__);
+XSLoader::load(
+    'Package::Anon',
+    $Package::Anon::{VERSION} ? ${ $Package::Anon::{VERSION} } : (),
+);
 
 use Symbol ();
 use Scalar::Util ();
