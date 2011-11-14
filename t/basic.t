@@ -8,6 +8,7 @@ sub __ANON__::foo { die 23 }
 
 my $stash = Package::Anon->new;
 my $obj = $stash->bless({});
+ok $obj->isa($stash);
 is ref $obj, '__ANON__';
 
 ok(!$obj->can('foo'));
