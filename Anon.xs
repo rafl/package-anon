@@ -11,11 +11,10 @@ _new_anon_stash (klass, name=NULL)
     SV *klass
     SV *name
   PREINIT:
-    SV *obj;
     HV *stash, *ourstash;
     STRLEN len;
     char *namestr;
-  PPCODE:
+  CODE:
     stash = newHV();
     ourstash = gv_stashsv(klass, 0);
 
@@ -28,10 +27,10 @@ _new_anon_stash (klass, name=NULL)
     }
 
     hv_name_set(stash, namestr, len, 0);
-    obj = newRV_noinc((SV *)stash);
-    sv_bless(obj, ourstash);
-
-    mPUSHs(obj);
+    RETVAL = newRV_noinc((SV *)stash);
+    sv_bless(RETVAL, ourstash);
+  OUTPUT:
+    RETVAL
 
 void
 bless (stash, rv)
