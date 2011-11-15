@@ -11,16 +11,15 @@ _new_anon_stash (klass, name)
     SV *klass
     SV *name
   PREINIT:
-    HV *stash, *ourstash;
+    HV *stash;
     STRLEN namelen;
     char *namestr;
   CODE:
     stash = newHV();
-    ourstash = gv_stashsv(klass, 0);
     namestr = SvPV(name, namelen);
     hv_name_set(stash, namestr, namelen, 0);
     RETVAL = newRV_noinc((SV *)stash);
-    sv_bless(RETVAL, ourstash);
+    sv_bless(RETVAL, gv_stashsv(klass, 0));
   OUTPUT:
     RETVAL
 
