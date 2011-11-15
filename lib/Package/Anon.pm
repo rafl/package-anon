@@ -14,9 +14,9 @@ use Symbol ();
 use Scalar::Util ();
 
 sub new {
-    my $class = shift;
+    my ($class, $name) = @_;
 
-    my $stash = $class->_new_anon_stash(@_);
+    my $stash = $class->_new_anon_stash(defined $name ? $name : '__ANON__');
 
     my $weak_stash = $stash;
     Scalar::Util::weaken($weak_stash);

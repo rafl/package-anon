@@ -7,26 +7,18 @@ MODULE = Package::Anon  PACKAGE = Package::Anon
 PROTOTYPES: DISABLE
 
 SV *
-_new_anon_stash (klass, name=NULL)
+_new_anon_stash (klass, name)
     SV *klass
     SV *name
   PREINIT:
     HV *stash, *ourstash;
-    STRLEN len;
+    STRLEN namelen;
     char *namestr;
   CODE:
     stash = newHV();
     ourstash = gv_stashsv(klass, 0);
-
-    if (name && SvOK(name)) {
-        namestr = SvPV(name, len);
-    }
-    else {
-        namestr = "__ANON__";
-        len = 8;
-    }
-
-    hv_name_set(stash, namestr, len, 0);
+    namestr = SvPV(name, namelen);
+    hv_name_set(stash, namestr, namelen, 0);
     RETVAL = newRV_noinc((SV *)stash);
     sv_bless(RETVAL, ourstash);
   OUTPUT:
